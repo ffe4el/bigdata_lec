@@ -42,18 +42,21 @@ def getTourismStatsItem(ServiceKey, area, category):
 
 def getTourismStatsService(area, category):
     # jsonResult = []
-    result = []
-    jsonData = getTourismStatsItem(ServiceKey, area, category) #[CODE 2]
-    if (jsonData['response']['header']['resultMsg'] == 'OK'):
-        area = jsonData['response']['body']['items']['item']['AREA'] #지역코드
-        sno = jsonData['response']['body']['items']['item']['SNO'] #SNO는 숙박업체 고유번호
-        category = jsonData['response']['body']['items']['item']['CATEGORY'] #숙박업체종류
-        address1 = jsonData['response']['body']['items']['item']['ADDRESS1'] #숙박업체 주소
-        address2 = jsonData['response']['body']['items']['item']['ADDRESS2'] #숙박업체 상세주소
-        tel = jsonData['response']['body']['items']['item']['TEL'] #숙박업체 전화번호
-        name = jsonData['response']['body']['items']['item']['NAME'] #숙박업체 이름
-        # jsonResult.append({'name' : name,'area': area, 'address1': address1,'address2': address2, 'category': category, 'sno': sno, 'tel': tel})
-        result.append([sno, area, category, name, address1, address2, tel])
+    while True:
+        result = []
+        jsonData = getTourismStatsItem(ServiceKey, area, category) #[CODE 2]
+        if (jsonData['response']['header']['resultMsg'] == 'OK'):
+            area = jsonData['response']['body']['items']['item']['AREA'] #지역코드
+            sno = jsonData['response']['body']['items']['item']['SNO'] #SNO는 숙박업체 고유번호
+            category = jsonData['response']['body']['items']['item']['CATEGORY'] #숙박업체종류
+            address1 = jsonData['response']['body']['items']['item']['ADDRESS1'] #숙박업체 주소
+            address2 = jsonData['response']['body']['items']['item']['ADDRESS2'] #숙박업체 상세주소
+            tel = jsonData['response']['body']['items']['item']['TEL'] #숙박업체 전화번호
+            name = jsonData['response']['body']['items']['item']['NAME'] #숙박업체 이름
+            # jsonResult.append({'name' : name,'area': area, 'address1': address1,'address2': address2, 'category': category, 'sno': sno, 'tel': tel})
+            result.append([sno, area, category, name, address1, address2, tel])
+        elif (jsonData['response']['header']['resultMsg'] == ''):
+            break
     return (result, name)
 
 def main():
