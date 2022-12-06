@@ -41,7 +41,7 @@ def getTourismStatsItem(ServiceKey, area, category):
         return json.loads(retData)
 
 def getTourismStatsService(area, category):
-    jsonResult = []
+    # jsonResult = []
     result = []
     jsonData = getTourismStatsItem(ServiceKey, area, category) #[CODE 2]
     if (jsonData['response']['header']['resultMsg'] == 'OK'):
@@ -52,28 +52,29 @@ def getTourismStatsService(area, category):
         address2 = jsonData['response']['body']['items']['item']['ADDRESS2'] #숙박업체 상세주소
         tel = jsonData['response']['body']['items']['item']['TEL'] #숙박업체 전화번호
         name = jsonData['response']['body']['items']['item']['NAME'] #숙박업체 이름
-        jsonResult.append({'name' : name,'area': area, 'address1': address1,'address2': address2, 'category': category, 'sno': sno, 'tel': tel})
-        result.append([sno,area,category, name, address1, address2,tel])
-    return (jsonResult, result, name)
+        # jsonResult.append({'name' : name,'area': area, 'address1': address1,'address2': address2, 'category': category, 'sno': sno, 'tel': tel})
+        result.append([sno, area, category, name, address1, address2, tel])
+    return (result, name)
 
 def main():
-    jsonResult = []
+    # jsonResult = []
     result = []
 
     print("<< 전라북도 관광지 숙박 위치 정보 >>")
     area = input(
         '지역코드(01-고창군 02-군산시 03-김제시 04-남원시 05-무주군 06-부안군 07-순창군 08-완주군 09-익산시 10-임실군 11-장수군 12-전주시 13-진안군 14-진안군) : ')
-    category = int(input('숙박시설분류(01-호텔 02-굿스테이 03-리조트/콘도 04-모텔 05-팬션/민박 06-유스호스텔/수련원 07-한옥) : '))
+    category = input('숙박시설분류(01-호텔 02-굿스테이 03-리조트/콘도 04-모텔 05-팬션/민박 06-유스호스텔/수련원 07-한옥) : ')
 
-    jsonResult, result, name = getTourismStatsService(area, category)  # [CODE 3]
+    result, name = getTourismStatsService(area, category)  # [CODE 3]
 
     if (name == ''):  # URL 요청은 성공하였지만, 데이터 제공이 안된 경우
         print('데이터가 전달되지 않았습니다. 공공데이터포털의 서비스 상태를 확인하기 바랍니다.')
     else:
-        # 파일저장 : csv 파일
+        # 데이터 프레임 형성
         columns = ["고유번호", "지역코드", '숙박종류', "이름", "주소", "상세주소", '전화번호']
         result_df = pd.DataFrame(result, columns=columns)
-        result_df.to_csv(f'./{area}_{category}.csv', index=False, encoding='cp949')
+        result_df.head()
+        # result_df.to_csv(f'./{area}_{category}.csv', index=False, encoding='cp949')
 
 if __name__ == "__main__":
     main()
