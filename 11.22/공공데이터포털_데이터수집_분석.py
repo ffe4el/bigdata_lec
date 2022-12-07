@@ -5,6 +5,7 @@ import datetime
 import time
 import json
 import pandas as pd
+import xmltodict
 
 # [code1] url 접속을 요청하고 응답을 받아서 반환
 def getRequestUrl(url):
@@ -36,6 +37,7 @@ def getTourismStatsItem(yyyymm, national_code, ed_cd):
     url = service_url + parameters
     print(url)   #액세스 거부 여부 확인용 출력
     retData = getRequestUrl(url) #[CODE 1]
+
 
     if (retData == None):
         return None
